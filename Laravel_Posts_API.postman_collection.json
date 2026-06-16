@@ -1,0 +1,315 @@
+{
+    "info": {
+        "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567802",
+        "name": "Posts API (Laravel)",
+        "description": "# Posts API — Laravel\n\nПовноцінний REST API для управління постами, реалізований на **Laravel 13** (`App\\Http\\Controllers\\PostController`). Маршрути зареєстровані у `routes/web.php`. Дані зберігаються в пам'яті (константа `self::DATA`).\n\n---\n\n## Базовий URL\n\n```\nhttp://localhost:8000\n```\n\nЗапуск сервера:\n```\nphp artisan serve\n```\n\n---\n\n## Реєстрація маршрутів (`routes/web.php`)\n\n```php\nuse App\\Http\\Controllers\\PostController;\n\nRoute::get('/posts', [PostController::class, 'getPosts']);\nRoute::get('/posts/{id}', [PostController::class, 'getPostById']);\nRoute::post('/posts', [PostController::class, 'createPost']);\nRoute::patch('/posts/{id}', [PostController::class, 'updatePost']);\nRoute::delete('/posts/{id}', [PostController::class, 'deletePost']);\n```\n\n---\n\n## Модель даних: Post\n\n| Поле | Тип | Опис |\n|------|-----|------|\n| `id` | string | Унікальний ідентифікатор поста |\n| `title` | string | Заголовок поста |\n| `content` | string | Текст поста |\n| `author` | string | Автор |\n| `publishedAt` | string | Дата публікації (`YYYY-MM-DD`) |\n\n---\n\n## HTTP Статус-коди\n\n| Код | Статус | Коли повертається |\n|-----|--------|-------------------|\n| `200` | OK | Успішний GET (список), GET (один), PATCH |\n| `201` | Created | Успішне створення через POST |\n| `204` | No Content | Успішне видалення через DELETE |\n| `404` | Not Found | Пост з вказаним ID не існує (`NotFoundHttpException`) |\n\n---\n\n## Початкові дані (seed)\n\nКонтролер ініціалізується з 4 записами в `self::DATA`:\n\n| ID | Автор | Заголовок |\n|----|--------|-----------|\n| \"1\" | Олександр Коваленко | Як почати роботу з Symfony 6.4 |\n| \"2\" | Марія Бондаренко | REST API: основні принципи |\n| \"3\" | Ігор Шевченко | Робота з базою даних у Laravel |\n| \"4\" | Тетяна Мельник | Git для початківців: перші кроки |\n\n> ℹ️ Відповіді віддаються через `response()->json(..., JSON_UNESCAPED_UNICODE)`, тому кирилиця читабельна.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Posts",
+            "description": "# CRUD операції з постами\n\nПовний набір ендпоінтів для управління постами.\n\n| Метод | Маршрут | Дія | Метод контролера |\n|-------|---------|-----|------------------|\n| GET | `/posts` | Список усіх постів | `getPosts()` |\n| POST | `/posts` | Створити новий пост | `createPost()` |\n| GET | `/posts/{id}` | Отримати пост за ID | `getPostById()` |\n| PATCH | `/posts/{id}` | Часткове оновлення | `updatePost()` |\n| DELETE | `/posts/{id}` | Видалити пост | `deletePost()` |",
+            "item": [
+                {
+                    "name": "List all posts",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8000/posts",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8000",
+                            "path": ["posts"]
+                        },
+                        "description": "# GET /posts — Список усіх постів\n\n**Контролер:** `PostController@getPosts`\n**Маршрут:** `Route::get('/posts', [PostController::class, 'getPosts'])`\n\nПовертає повний масив постів з константи `self::DATA`. Параметри та тіло запиту не потрібні.\n\n---\n\n## Відповіді\n\n### ✅ 200 OK — Успішно\n\nПовертає JSON-масив об'єктів постів."
+                    },
+                    "response": [
+                        {
+                            "name": "200 OK — All posts returned",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [{ "key": "Content-Type", "value": "application/json" }],
+                            "_postman_previewlanguage": "json",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost:8000/posts",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "8000",
+                                    "path": ["posts"]
+                                }
+                            },
+                            "body": "[\n  {\n    \"id\": \"1\",\n    \"title\": \"Як почати роботу з Symfony 6.4\",\n    \"content\": \"Symfony — це PHP-фреймворк для створення вебзастосунків. У цій статті розглянемо встановлення через Composer, структуру проєкту та перший контролер.\",\n    \"author\": \"Олександр Коваленко\",\n    \"publishedAt\": \"2026-06-10\"\n  },\n  {\n    \"id\": \"2\",\n    \"title\": \"REST API: основні принципи\",\n    \"content\": \"REST API будується навколо HTTP-методів GET, POST, PATCH та DELETE. Кожен ресурс має власний URL, а дані передаються у форматі JSON.\",\n    \"author\": \"Марія Бондаренко\",\n    \"publishedAt\": \"2026-06-12\"\n  },\n  {\n    \"id\": \"3\",\n    \"title\": \"Робота з базою даних у Laravel\",\n    \"content\": \"Eloquent ORM спрощує взаємодію з базою даних. Міграції дозволяють керувати структурою таблиць, а моделі — зчитувати й записувати дані.\",\n    \"author\": \"Ігор Шевченко\",\n    \"publishedAt\": \"2026-06-14\"\n  },\n  {\n    \"id\": \"4\",\n    \"title\": \"Git для початківців: перші кроки\",\n    \"content\": \"Git — система контролю версій. Команди git init, git add, git commit і git push дозволяють зберігати історію змін та працювати в команді.\",\n    \"author\": \"Тетяна Мельник\",\n    \"publishedAt\": \"2026-06-15\"\n  }\n]"
+                        }
+                    ]
+                },
+                {
+                    "name": "Create a new post",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"title\": \"Новий пост\",\n  \"content\": \"Текст нового поста\",\n  \"author\": \"Софія\",\n  \"publishedAt\": \"2026-06-16\"\n}",
+                            "options": {
+                                "raw": { "language": "json" }
+                            }
+                        },
+                        "url": {
+                            "raw": "http://localhost:8000/posts",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8000",
+                            "path": ["posts"]
+                        },
+                        "description": "# POST /posts — Створити новий пост\n\n**Контролер:** `PostController@createPost`\n**Маршрут:** `Route::post('/posts', [PostController::class, 'createPost'])`\n\nСтворює новий пост. Laravel парсить тіло запиту через `json_decode($request->getContent(), true)`. ID генерується випадковим чином (`rand(5, 100)`).\n\n---\n\n## Тіло запиту (JSON)\n\n| Поле | Тип | Опис |\n|------|-----|------|\n| `title` | string | Заголовок |\n| `content` | string | Текст |\n| `author` | string | Автор |\n| `publishedAt` | string | Дата публікації (необов'язково) |\n\n> ❌ Поле `id` не приймається із запиту — воно генерується автоматично.\n\n---\n\n## Відповіді\n\n### ✅ 201 Created — Пост створено\n\nПовертає об'єкт новоствореного поста з присвоєним ID."
+                    },
+                    "response": [
+                        {
+                            "name": "201 Created — Post created successfully",
+                            "status": "Created",
+                            "code": 201,
+                            "header": [{ "key": "Content-Type", "value": "application/json" }],
+                            "_postman_previewlanguage": "json",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"title\": \"Новий пост\",\n  \"content\": \"Текст нового поста\",\n  \"author\": \"Софія\",\n  \"publishedAt\": \"2026-06-16\"\n}",
+                                    "options": { "raw": { "language": "json" } }
+                                },
+                                "url": {
+                                    "raw": "http://localhost:8000/posts",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "8000",
+                                    "path": ["posts"]
+                                }
+                            },
+                            "body": "{\n  \"title\": \"Новий пост\",\n  \"content\": \"Текст нового поста\",\n  \"author\": \"Софія\",\n  \"publishedAt\": \"2026-06-16\",\n  \"id\": 42\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Get post by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8000/posts/:id",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8000",
+                            "path": ["posts", ":id"],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "string — унікальний ідентифікатор поста"
+                                }
+                            ]
+                        },
+                        "description": "# GET /posts/{id} — Отримати пост за ID\n\n**Контролер:** `PostController@getPostById`\n**Маршрут:** `Route::get('/posts/{id}', [PostController::class, 'getPostById'])`\n\nПовертає інформацію про один конкретний пост за його строковим ідентифікатором. Виконується перебір масиву `self::DATA` з порівнянням `===`.\n\n---\n\n## Відповіді\n\n### ✅ 200 OK — Пост знайдено\n\nПовертає об'єкт поста.\n\n### ⚠️ 200 OK — Пост не знайдено\n\nЯкщо пост не знайдено, метод повертає порожній масив `[]`."
+                    },
+                    "response": [
+                        {
+                            "name": "200 OK — Post found",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [{ "key": "Content-Type", "value": "application/json" }],
+                            "_postman_previewlanguage": "json",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost:8000/posts/1",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "8000",
+                                    "path": ["posts", "1"]
+                                }
+                            },
+                            "body": "{\n  \"id\": \"1\",\n  \"title\": \"Як почати роботу з Symfony 6.4\",\n  \"content\": \"Symfony — це PHP-фреймворк для створення вебзастосунків. У цій статті розглянемо встановлення через Composer, структуру проєкту та перший контролер.\",\n  \"author\": \"Олександр Коваленко\",\n  \"publishedAt\": \"2026-06-10\"\n}"
+                        },
+                        {
+                            "name": "200 OK — Post does not exist (empty)",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [{ "key": "Content-Type", "value": "application/json" }],
+                            "_postman_previewlanguage": "json",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost:8000/posts/999",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "8000",
+                                    "path": ["posts", "999"]
+                                }
+                            },
+                            "body": "[]"
+                        }
+                    ]
+                },
+                {
+                    "name": "Update post (PATCH)",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"title\": \"Оновлений заголовок\",\n  \"content\": \"Оновлений текст поста.\"\n}",
+                            "options": {
+                                "raw": { "language": "json" }
+                            }
+                        },
+                        "url": {
+                            "raw": "http://localhost:8000/posts/:id",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8000",
+                            "path": ["posts", ":id"],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "2",
+                                    "description": "string — ID поста для часткового оновлення"
+                                }
+                            ]
+                        },
+                        "description": "# PATCH /posts/{id} — Часткове оновлення поста\n\n**Контролер:** `PostController@updatePost`\n**Маршрут:** `Route::patch('/posts/{id}', [PostController::class, 'updatePost'])`\n\nДозволяє частково оновити існуючий запис. Пошук здійснюється в масиві `self::DATA`. Якщо пост знайдено, перевіряється наявність ключів `title`, `content`, `author`, `publishedAt` у надісланому JSON. Якщо ключ присутній, відповідне поле оновлюється.\n\n---\n\n## Тіло запиту (JSON)\n\nНадсилайте лише ті поля, які змінюються:\n\n| Поле | Тип | Опис |\n|------|-----|------|\n| `title` | string | Новий заголовок (якщо змінюється) |\n| `content` | string | Новий текст (якщо змінюється) |\n| `author` | string | Новий автор (якщо змінюється) |\n| `publishedAt` | string | Нова дата (якщо змінюється) |\n\n---\n\n## Відповіді\n\n### ✅ 200 OK — Оновлення застосовано\n\nПовертає оновлений об'єкт поста.\n\n### ❌ 404 Not Found — Пост не знайдено\n\nВикидає `NotFoundHttpException`, якщо пост з вказаним ID не знайдено."
+                    },
+                    "response": [
+                        {
+                            "name": "200 OK — Partial update applied",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [{ "key": "Content-Type", "value": "application/json" }],
+                            "_postman_previewlanguage": "json",
+                            "originalRequest": {
+                                "method": "PATCH",
+                                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"title\": \"Оновлений заголовок\",\n  \"content\": \"Оновлений текст поста.\"\n}",
+                                    "options": { "raw": { "language": "json" } }
+                                },
+                                "url": {
+                                    "raw": "http://localhost:8000/posts/2",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "8000",
+                                    "path": ["posts", "2"]
+                                }
+                            },
+                            "body": "{\n  \"id\": \"2\",\n  \"title\": \"Оновлений заголовок\",\n  \"content\": \"Оновлений текст поста.\",\n  \"author\": \"Марія Бондаренко\",\n  \"publishedAt\": \"2026-06-12\"\n}"
+                        },
+                        {
+                            "name": "404 Not Found — Post does not exist",
+                            "status": "Not Found",
+                            "code": 404,
+                            "header": [{ "key": "Content-Type", "value": "application/json" }],
+                            "_postman_previewlanguage": "json",
+                            "originalRequest": {
+                                "method": "PATCH",
+                                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"title\": \"Оновлений заголовок\"\n}",
+                                    "options": { "raw": { "language": "json" } }
+                                },
+                                "url": {
+                                    "raw": "http://localhost:8000/posts/999",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "8000",
+                                    "path": ["posts", "999"]
+                                }
+                            },
+                            "body": "{\n  \"message\": \"\"\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete a post",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8000/posts/:id",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8000",
+                            "path": ["posts", ":id"],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "3",
+                                    "description": "string — ID поста для видалення"
+                                }
+                            ]
+                        },
+                        "description": "# DELETE /posts/{id} — Видалити пост\n\n**Контролер:** `PostController@deletePost`\n**Маршрут:** `Route::delete('/posts/{id}', [PostController::class, 'deletePost'])`\n\nВидаляє запис за його ID. Метод шукає елемент в `self::DATA`, і якщо знаходить, відразу повертає порожню відповідь зі статусом `204 No Content`.\n\n> ⚠️ Реального видалення елемента з масиву `self::DATA` не відбувається, оскільки це константа, проте метод успішно імітує видалення.\n\n---\n\n## Відповіді\n\n### ✅ 204 No Content — Пост видалено\n\nУспішний статус без тіла відповіді.\n\n### ❌ 404 Not Found — Пост не знайдено\n\nВикидається `NotFoundHttpException`, якщо пост не знайдено."
+                    },
+                    "response": [
+                        {
+                            "name": "204 No Content — Post deleted",
+                            "status": "No Content",
+                            "code": 204,
+                            "header": [],
+                            "_postman_previewlanguage": "text",
+                            "originalRequest": {
+                                "method": "DELETE",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost:8000/posts/3",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "8000",
+                                    "path": ["posts", "3"]
+                                }
+                            },
+                            "body": ""
+                        },
+                        {
+                            "name": "404 Not Found — Post does not exist",
+                            "status": "Not Found",
+                            "code": 404,
+                            "header": [{ "key": "Content-Type", "value": "application/json" }],
+                            "_postman_previewlanguage": "json",
+                            "originalRequest": {
+                                "method": "DELETE",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost:8000/posts/999",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "8000",
+                                    "path": ["posts", "999"]
+                                }
+                            },
+                            "body": "{\n  \"message\": \"\"\n}"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
